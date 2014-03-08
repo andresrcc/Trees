@@ -106,6 +106,9 @@ def main():
     A.insert(2)
     A.show()
     print A.bfs(9)
+    print A.bfs(3)
+    print A.dfs(3)
+    print A.dfs(7)
 
 if __name__ == "__main__":
     main()
