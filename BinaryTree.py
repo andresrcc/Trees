@@ -40,20 +40,23 @@ class BinaryTree:
         while (queue != []):
             leaf = queue.pop(0)
             if leaf.value == value:
-                return True
+                self.__value_found = True
+                return
 
             if leaf.left != None:
                 queue.append(leaf.left)
             if leaf.right != None:
                 queue.append(leaf.right)
 
-        return False
+        return
 
     def bfs(self, value):
         if self.__root.value == value:
             return True
         else:
+            self.__value_found = False
             self.__bfs(value, self.__root)
+            return self.__value_found
 
     def __show(self, tree):
         leaf = Node()
@@ -102,7 +105,7 @@ def main():
     A.insert(6)
     A.insert(2)
     A.show()
-    print A.bfs(3)
+    print A.bfs(9)
 
 if __name__ == "__main__":
     main()
