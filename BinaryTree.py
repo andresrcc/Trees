@@ -7,6 +7,7 @@ class Node:
 class BinaryTree:
     def __init__(self):
         self.__root = None
+        self.__value_found = None
 
     def __insert(self,value, tree):
             if value < tree.value:
@@ -30,6 +31,30 @@ class BinaryTree:
         else:
             self.__insert(value,self.__root)
 
+
+    def __bfs(self,value,tree):
+        queue = []
+        leaf = Node()
+        queue.append(tree)
+
+        while (queue != []):
+            leaf = queue.pop(0)
+            if leaf.value == value:
+                return True
+
+            if leaf.left != None:
+                queue.append(leaf.left)
+            if leaf.right != None:
+                queue.append(leaf.right)
+
+        return False
+
+    def bfs(self, value):
+        if self.__root.value == value:
+            return True
+        else:
+            self.__bfs(value, self.__root)
+
     def __show(self, tree):
         leaf = Node()
         queue = []
@@ -46,6 +71,27 @@ class BinaryTree:
 
     def show(self):
         self.__show(self.__root)
+
+    def __dfs(self,value,tree, found = False):
+        if self.__value_found == True:
+            return
+        if tree == None:
+            return
+        if tree.value == value:
+            self.__value_found = True
+            return
+        else:
+            self.__dfs(value,tree.left)
+            self.__dfs(value,tree.right)
+        return
+
+    def dfs(self, value):
+        if self.__root.value == value:
+            return True
+        else:
+            self.__value_found = False
+            self.__dfs(value, self.__root)
+            return self.__value_found
         
 
 def main():
@@ -56,6 +102,7 @@ def main():
     A.insert(6)
     A.insert(2)
     A.show()
+    print A.bfs(3)
 
 if __name__ == "__main__":
     main()
