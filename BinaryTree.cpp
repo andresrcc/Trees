@@ -6,6 +6,7 @@ struct Node {
   int value;
   Node* left;
   Node* right;
+  bool visited;
 };
 
 //A simple binary tree
@@ -27,8 +28,9 @@ private:
   //Deletes nodes of the tree from the bottom up traversing in DFS mode
   void erase_tree(Node* tree);
   void insert(int value, Node*& tree);
-  bool dfs(int value, Node* tree);
+  void dfs(int value, Node* tree);
   bool bfs(int value, Node* tree);
+  bool value_found;
   Node* root;
 };
 
@@ -37,6 +39,7 @@ BinaryTree::BinaryTree(){
   root->value = NULL;
   root->left = NULL;
   root->left = NULL;
+  root->visited = false;
   
 }
 
@@ -53,6 +56,7 @@ void BinaryTree::insert(int value, Node*& tree){
     tree->value = value;
     tree->left = NULL;
     tree->right = NULL;
+    tree->visited = false;
 
     return;
 
@@ -78,24 +82,41 @@ void BinaryTree::insert(int value){
 }
 
 //DFS starting from the left
-bool BinaryTree::dfs(int value, Node* tree){
-  if(tree == NULL){
-                                    //stopping condition       
-  }else if(value == tree->value){
-    return true;                    //found
-  }else{                           
-    dfs(value, tree->left);
-    dfs(value, tree->right);
+void BinaryTree::dfs(int value, Node* tree){
+  static bool found;
+
+  if (value_found == true) {
+    return;
   }
-  return false; 
+
+  if(tree == NULL){
+    return;
+  }
+
+  if(tree->visited == true){
+    return;
+  }
+
+  if(value == tree->value){
+    value_found = true;
+    return;
+  }else{
+    dfs(value,tree->left);
+    dfs(value,tree->right);
+  }
+
+  return;
 }
 
 bool BinaryTree::dfs(int value){
-  if(root->value == value){
-    return true;
-  }
+  value_found = false;
 
+  if(root->value == value){
+    value_found = true;
+    return value_found;
+  }
   dfs(value, root);
+  return value_found;
 }
 
 bool BinaryTree::bfs(int value, Node* tree){
@@ -181,5 +202,12 @@ int main(){  //Testing the Class
   A.insert(8);
   A.insert(9);
   A.show();
+  std::cout << std::endl;
+  if(A.dfs(10) == true){
+    std::cout << "Found" << std::endl;
+  }else{
+    std::cout << "Not Found" << std::endl;
+  }
+
   return 0;
 }
